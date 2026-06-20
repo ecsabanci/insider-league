@@ -10,3 +10,4 @@ Route::post('/fixtures/generate', [LeagueController::class, 'generateFixtures'])
 Route::post('/play-week', [LeagueController::class, 'playWeek']);
 Route::post('/play-all', [LeagueController::class, 'playAll']);
 Route::post('/reset', [LeagueController::class, 'reset']);
+Route::get('/predictions', [LeagueController::class, 'predictions']);

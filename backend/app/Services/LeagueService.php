@@ -12,6 +12,7 @@ class LeagueService
         private FixtureGenerator $fixtureGenerator,
         private MatchSimulator $matchSimulator,
         private StandingsCalculator $standingsCalculator,
+        private ChampionshipPredictor $predictor,
     ) {}
 
     public function generateFixtures(): void
@@ -52,6 +53,36 @@ class LeagueService
                 'played' => $fixture->played,
             ])->values())
             ->toArray();
+    }
+
+    public function getChampionshipPredictions(): array
+    {
+        $teams = Team::all()->map(fn ($team) => [
+            'id' => $team->id,
+            'name' => $team->name,
+            'strength' => $team->strength,
+        ])->all();
+
+        $played = [];
+        $remaining = [];
+
+        foreach (Fixture::query()->get() as $fixture) {
+            $matchData = [
+                'home_id' => $fixture->home_team_id,
+                'away_id' => $fixture->away_team_id,
+                'home_goals' => $fixture->home_goals,
+                'away_goals' => $fixture->away_goals,
+                'played' => $fixture->played,
+            ];
+
+            if ($fixture->played) {
+                $played[] = $matchData;
+            } else {
+                $remaining[] = $matchData;
+            }
+        }
+
+        return $this->predictor->predict($teams, $played, $remaining);
     }
 
     public function playWeek(): void
