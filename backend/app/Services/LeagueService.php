@@ -37,6 +37,23 @@ class LeagueService
         }
     }
 
+    public function getFixtures(): array
+    {
+        return Fixture::query()
+            ->with('homeTeam', 'awayTeam') // eager loading (performans için)
+            ->orderBy('week')
+            ->get()
+            ->groupBy('week')
+            ->map(fn ($weekFixtures) => $weekFixtures->map(fn ($fixture) => [
+                'home' => $fixture->homeTeam->name,
+                'away' => $fixture->awayTeam->name,
+                'home_goals' => $fixture->home_goals,
+                'away_goals' => $fixture->away_goals,
+                'played' => $fixture->played,
+            ])->values())
+            ->toArray();
+    }
+
     public function playWeek(): void
     {
         $nextWeek = Fixture::query()
@@ -66,6 +83,13 @@ class LeagueService
         }
     }
 
+    public function playAll(): void
+    {
+        while (Fixture::query()->where('played', false)->exists()) {
+            $this->playWeek();
+        }
+    }
+
     public function getStandings(): array
     {
         $teams = Team::all()->map(fn ($team) => [
@@ -82,5 +106,14 @@ class LeagueService
         ])->all();
 
         return $this->standingsCalculator->calculate($teams, $matches);
+    }
+
+    public function reset(): void
+    {
+        Fixture::query()->update([
+            'home_goals' => null,
+            'away_goals' => null,
+            'played' => false,
+        ]);
     }
 }
