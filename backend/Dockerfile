@@ -26,5 +26,8 @@ COPY . .
 # application port
 EXPOSE 8000
 
-# command to run when container starts: migrate + seed + serve
-CMD php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=8000
+# make start.sh executable
+RUN chmod +x start.sh
+
+# run start.sh script
+CMD ["./start.sh"]
