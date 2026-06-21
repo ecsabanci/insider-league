@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { Standing, ChampionshipPrediction, AllWeekFixtures } from '@/types/types'
+import type { Standing, ChampionshipPrediction, AllWeekFixtures, PlayedWeek } from '@/types/types'
 import * as api from '@/api/api'
 
 export const useInsiderLeagueStore = defineStore('insiderLeague', () => {
@@ -11,6 +11,15 @@ export const useInsiderLeagueStore = defineStore('insiderLeague', () => {
   const currentPage = ref<'teams' | 'fixtures' | 'simulation'>('teams')
   const playedWeeksCount = computed(() => {
     return fixtures.value.filter(week => week.every(match => match.played)).length
+  })
+  const playedWeeks = computed(() => {
+    const result: PlayedWeek[] = []
+    fixtures.value.forEach((week, index) => {
+      if (week.every((match) => match.played)) {
+        result.push({ week: index + 1, matches: week })
+      }
+    })
+    return result.reverse()
   })
 
   function goToFixtures() {
@@ -94,5 +103,6 @@ export const useInsiderLeagueStore = defineStore('insiderLeague', () => {
     goToTeams,
     playedWeeksCount,
     currentPage,
+    playedWeeks,
   }
 })

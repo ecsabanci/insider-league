@@ -21,6 +21,11 @@ export interface ChampionshipPrediction {
     percentage: number
 }
 
+export interface PlayedWeek {
+    week: number
+    matches: FixtureMatch[]
+  }
+
 export interface FixtureMatch {
     home: string
     away: string

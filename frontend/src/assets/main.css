@@ -1,0 +1,68 @@
+:root {
+    --color-bg: #0a0a0a;
+    --color-surface: #141414;
+    --color-surface-alt: #1c1c1c;
+    --color-text: #f5f5f5;
+    --color-muted: #8a8a8a;
+    --color-border: #2e2e2e;
+  
+    --accent: #39ff14;
+    --accent-cyan: #00e5ff;
+    --accent-magenta: #ff2bd6;
+    --danger: #ff3b3b;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+    letter-spacing: 0.02em;
+  }
+  
+  button {
+    cursor: pointer;
+    border: 2px solid var(--accent);
+    border-radius: 0;
+    padding: 10px 20px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: transparent;
+    color: var(--accent);
+    transition: all 0.12s;
+  }
+  
+  button:hover {
+    background: var(--accent);
+    color: var(--color-bg);
+  }
+  
+  button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  
+  button:disabled:hover {
+    background: transparent;
+    color: var(--accent);
+  }
+  
+  h1 {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-left: 4px solid var(--accent);
+    padding-left: 14px;
+  }
+  
+  h2, h3 {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text);
+  }
