@@ -19,21 +19,40 @@ onMounted(() => {
 
     <p v-if="store.loading">Loading...</p>
 
-    <Buttons
-      :loading="store.loading"
-      @generate="store.generateFixtures()"
-      @play-week="store.playWeek()"
-      @play-all="store.playAll()"
-      @reset="store.reset()"
-    />
+    <section v-if="store.currentPage === 'teams'">
+      <h2>Tournament Teams</h2>
+      <StandingTable :standings="store.standings" />
+      <button :disabled="store.loading" @click="store.generateFixtures()">
+        Generate Fixtures
+      </button>
+    </section>
 
-    <h2>Standings</h2>
-    <StandingTable :standings="store.standings" />
+    <section v-else-if="store.currentPage === 'fixtures'">
+      <h2>Generated Fixtures</h2>
+      <FixturesList :fixtures="store.fixtures" />
+      <button :disabled="store.loading" @click="store.goToSimulation()">
+        Start Simulation
+      </button>
+    </section>
 
-    <h2>Fixtures</h2>
-    <FixturesList :fixtures="store.fixtures" />
+    <section v-else-if="store.currentPage === 'simulation'">
+      <h2>Simulation</h2>
 
-    <h2>Predictions</h2>
-    <PredictionsPanel :predictions="store.championshipPredictions" />
+      <StandingTable :standings="store.standings" />
+
+      <h3>Championship Predictions</h3>
+      <PredictionsPanel
+        v-if="store.playedWeeksCount >= 4"
+        :predictions="store.championshipPredictions"
+      />
+      <p v-else>Şampiyonluk tahminleri 4. haftadan sonra gösterilir.</p>
+
+      <Buttons
+        :loading="store.loading"
+        @play-week="store.playWeek()"
+        @play-all="store.playAll()"
+        @reset="store.reset()"
+      />
+    </section>
   </main>
 </template>
