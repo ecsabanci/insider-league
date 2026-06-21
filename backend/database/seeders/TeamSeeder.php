@@ -20,7 +20,11 @@ class TeamSeeder extends Seeder
         ];
 
         foreach ($teams as $team) {
-            \App\Models\Team::create($team);
+            // to prevent team creation after build is run for every deploy
+            \App\Models\Team::firstOrCreate(
+                ['name' => $team['name']],
+                ['strength' => $team['strength']]
+            );
         }
     }
 }
