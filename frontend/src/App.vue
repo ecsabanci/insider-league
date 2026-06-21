@@ -3,6 +3,8 @@ import { onMounted } from 'vue'
 import { useInsiderLeagueStore } from '@/stores/insiderLeague'
 import StandingTable from '@/components/StandingTable.vue'
 import FixturesList from '@/components/FixturesList.vue'
+import PredictionsPanel from '@/components/PredictionsPanel.vue'
+import Buttons from '@/components/Buttons.vue'
 
 const store = useInsiderLeagueStore()
 
@@ -17,10 +19,13 @@ onMounted(() => {
 
     <p v-if="store.loading">Loading...</p>
 
-    <button @click="store.generateFixtures()">Generate Fixtures</button>
-    <button @click="store.playWeek()">Play Next Week</button>
-    <button @click="store.playAll()">Play All</button>
-    <button @click="store.reset()">Reset</button>
+    <Buttons
+      :loading="store.loading"
+      @generate="store.generateFixtures()"
+      @play-week="store.playWeek()"
+      @play-all="store.playAll()"
+      @reset="store.reset()"
+    />
 
     <h2>Standings</h2>
     <StandingTable :standings="store.standings" />
@@ -29,6 +34,6 @@ onMounted(() => {
     <FixturesList :fixtures="store.fixtures" />
 
     <h2>Predictions</h2>
-    <pre>{{ store.championshipPredictions }}</pre>
+    <PredictionsPanel :predictions="store.championshipPredictions" />
   </main>
 </template>
