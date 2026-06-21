@@ -49,7 +49,7 @@ class LeagueController extends Controller
         return response()->json($this->leagueService->getFixtures());
     }
 
-    public function predictions()
+    public function championshipPredictions()
     {
         return response()->json($this->leagueService->getChampionshipPredictions());
     }

@@ -1,11 +1,32 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { useInsiderLeagueStore } from '@/stores/insiderLeague'
+
+const store = useInsiderLeagueStore()
+
+onMounted(() => {
+  store.refreshAll()
+})
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
-</template>
+  <main style="padding: 20px; font-family: sans-serif">
+    <h1>Insider One Champions League</h1>
 
-<style scoped></style>
+    <p v-if="store.loading">Loading...</p>
+
+    <button @click="store.generateFixtures()">Generate Fixtures</button>
+    <button @click="store.playWeek()">Play Next Week</button>
+    <button @click="store.playAll()">Play All</button>
+    <button @click="store.reset()">Reset</button>
+
+    <h2>Standings</h2>
+    <pre>{{ store.standings }}</pre>
+
+    <h2>Fixtures</h2>
+    <pre>{{ store.fixtures }}</pre>
+
+    <h2>Championship Predictions</h2>
+    <pre>{{ store.championshipPredictions }}</pre>
+  </main>
+</template>
