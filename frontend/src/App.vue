@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useInsiderLeagueStore } from '@/stores/insiderLeague'
+import StandingTable from '@/components/StandingTable.vue'
+import FixturesList from '@/components/FixturesList.vue'
 
 const store = useInsiderLeagueStore()
 
@@ -21,12 +23,12 @@ onMounted(() => {
     <button @click="store.reset()">Reset</button>
 
     <h2>Standings</h2>
-    <pre>{{ store.standings }}</pre>
+    <StandingTable :standings="store.standings" />
 
     <h2>Fixtures</h2>
-    <pre>{{ store.fixtures }}</pre>
+    <FixturesList :fixtures="store.fixtures" />
 
-    <h2>Championship Predictions</h2>
+    <h2>Predictions</h2>
     <pre>{{ store.championshipPredictions }}</pre>
   </main>
 </template>

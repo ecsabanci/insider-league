@@ -44,7 +44,7 @@ class LeagueService
             ->with('homeTeam', 'awayTeam') // eager loading (performans için)
             ->orderBy('week')
             ->get()
-            ->groupBy('week')
+            ->groupBy('week') // groupby returns an object(key => value)
             ->map(fn ($weekFixtures) => $weekFixtures->map(fn ($fixture) => [
                 'home' => $fixture->homeTeam->name,
                 'away' => $fixture->awayTeam->name,
@@ -52,6 +52,7 @@ class LeagueService
                 'away_goals' => $fixture->away_goals,
                 'played' => $fixture->played,
             ])->values())
+            ->values() // convert the object to an array
             ->toArray();
     }
 
